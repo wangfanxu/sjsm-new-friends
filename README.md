@@ -1,4 +1,4 @@
-# muso-ninjas
+# SJSM
 
 ## Project setup
 ```

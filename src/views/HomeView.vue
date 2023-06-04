@@ -9,12 +9,18 @@
             <h3>{{ doc.name }}</h3>
           </div>
           <div class="info">
-            <p>性别： {{ doc.gender }}</p>
+            <p>性别： {{ doc.gender === "male" ? "男" : "女" }}</p>
+            <p>联系方式： {{ doc.contact }}</p>
             <p>注册时间: {{ Date(doc.createdAt) }}</p>
           </div>
-          <div class="accept" @click="handleAccept(doc.id)">
+          <div class="accept">
             <p>接收人：{{ doc.userName }}</p>
-            <button style="margin-left: 10px">接收</button>
+            <button style="margin-left: 10px" @click="handleAccept(doc.id)">
+              接收
+            </button>
+            <button v-if="isCancelAllowed(doc)" @click="handleCancel(doc.id)">
+              撤销接受
+            </button>
           </div>
         </div>
       </div>
@@ -27,6 +33,7 @@ import getCollection from "@/composables/getCollection";
 import useDocument from "@/composables/useDoc";
 import getUser from "@/composables/getUser";
 import { timestamp } from "@/firebase/config";
+import { computed } from "vue";
 export default {
   name: "Home",
   setup() {
@@ -34,6 +41,9 @@ export default {
 
     const { user } = getUser();
 
+    const isCancelAllowed = ({ userName }) => {
+      return user.value.displayName === userName;
+    };
     const handleAccept = async (documentId) => {
       const { updateDoc } = useDocument(`/newfriends/${documentId}`);
       await updateDoc({
@@ -43,7 +53,16 @@ export default {
       });
     };
 
-    return { error, documents, handleAccept };
+    const handleCancel = async (documentId) => {
+      const { updateDoc } = useDocument(`/newfriends/${documentId}`);
+      await updateDoc({
+        userId: null,
+        updatedAt: timestamp(),
+        userName: null,
+      });
+    };
+
+    return { error, documents, handleAccept, isCancelAllowed, handleCancel };
   },
 };
 </script>
