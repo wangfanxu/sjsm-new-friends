@@ -4,12 +4,20 @@
       <img src="@/assets/SJSM_logo.png" />
       <h1><router-link :to="{ name: 'home' }">SJSM</router-link></h1>
       <div class="links">
-        <div v-if="user"><button @click="handleClick()">Logout</button></div>
+        <div v-if="user">
+          <button @click="handleClick()">登出</button>
+          <router-link class="btn" :to="{ name: 'CreateNewFriend' }"
+            >添加慕道友</router-link
+          >
+          <router-link class="btn" :to="{ name: 'ManageNewFriend' }"
+            >管理员</router-link
+          >
+        </div>
         <div v-else>
           <router-link class="btn" :to="{ name: 'Signup' }"
-            >Sign up</router-link
+            >创建</router-link
           >
-          <router-link class="btn" :to="{ name: 'Login' }">Log in</router-link>
+          <router-link class="btn" :to="{ name: 'Login' }">登录</router-link>
         </div>
       </div>
     </nav>

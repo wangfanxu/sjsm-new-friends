@@ -49,14 +49,14 @@ export default {
     const { error, documents } = getCollection("newfriends");
 
     const isCancelAllowed = ({ userName }) => {
-      return user.value.displayName === userName;
+      return user.value?.displayName === userName;
     };
     const handleAccept = async (documentId) => {
       const { updateDoc } = useDocument(`/newfriends/${documentId}`);
       await updateDoc({
         userId: user.value.uid,
         updatedAt: timestamp(),
-        userName: user.value.displayName,
+        userName: user.value?.displayName,
       });
     };
 
