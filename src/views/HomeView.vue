@@ -11,10 +11,10 @@
           <div class="info">
             <p>性别： {{ doc.gender === "male" ? "男" : "女" }}</p>
             <p>联系方式： {{ doc.contact }}</p>
-            <p>注册时间: {{ Date(doc.createdAt) }}</p>
+            <p>注册时间: {{ convertedTimestamp(doc.createdAt) }}</p>
           </div>
           <div class="accept">
-            <p>接收人：{{ doc.userName }}</p>
+            <p v-if="doc.userName">接收人：{{ doc.userName }}</p>
             <button style="margin-left: 10px" @click="handleAccept(doc.id)">
               接收
             </button>
@@ -33,13 +33,20 @@ import getCollection from "@/composables/getCollection";
 import useDocument from "@/composables/useDoc";
 import getUser from "@/composables/getUser";
 import { timestamp } from "@/firebase/config";
+import { useRouter } from "vue-router";
 import { computed } from "vue";
 export default {
   name: "Home",
   setup() {
-    const { error, documents } = getCollection("newfriends");
-
+    //if not login, redirect to login page
     const { user } = getUser();
+    const router = useRouter();
+    if (!user) router.push("/login");
+
+    const convertedTimestamp = (firebaseTimestamp) => {
+      return firebaseTimestamp.toDate().toLocaleDateString();
+    };
+    const { error, documents } = getCollection("newfriends");
 
     const isCancelAllowed = ({ userName }) => {
       return user.value.displayName === userName;
@@ -62,7 +69,14 @@ export default {
       });
     };
 
-    return { error, documents, handleAccept, isCancelAllowed, handleCancel };
+    return {
+      error,
+      documents,
+      handleAccept,
+      isCancelAllowed,
+      handleCancel,
+      convertedTimestamp,
+    };
   },
 };
 </script>
