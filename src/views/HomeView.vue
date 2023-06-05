@@ -41,7 +41,7 @@ export default {
     //if not login, redirect to login page
     const { user } = getUser();
     const router = useRouter();
-    if (!user) router.push("/login");
+    if (!user.value) router.push("/login");
 
     const convertedTimestamp = (firebaseTimestamp) => {
       return firebaseTimestamp.toDate().toLocaleDateString();
