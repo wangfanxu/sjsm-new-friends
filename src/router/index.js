@@ -5,11 +5,24 @@ import Signup from "@/views/auth/Signup.vue";
 import CreateNewFriend from "@/views/newFriends/CreateNewFriend.vue";
 import ManageNewFriend from "@/views/newFriends/ManageNewFriend.vue";
 import getUser from "@/composables/getUser";
+
+//route guard
+import { projectAuth } from "@/firebase/config";
+
+const requiredAuth = (to, from, next) => {
+  let user = projectAuth.currentUser;
+  if (!user) {
+    next({ name: "Login" });
+  } else {
+    next();
+  }
+};
 const routes = [
   {
     path: "/",
     name: "home",
     component: HomeView,
+    beforeEnter: requiredAuth,
   },
   {
     path: "/login",
@@ -30,6 +43,7 @@ const routes = [
     path: "/new-friend/manage",
     name: "ManageNewFriend",
     component: ManageNewFriend,
+    beforeEnter: requiredAuth,
   },
 ];
 

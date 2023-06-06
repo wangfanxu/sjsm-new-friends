@@ -2,7 +2,10 @@
   <div class="home">
     <div v-if="error" class="error">Could not fetch the data from system</div>
 
+    
     <div v-if="documents">
+      我的慕道友
+      待接受慕道友
       <div v-for="doc in documents" :key="doc.id">
         <div class="single">
           <div class="thumbnail">
@@ -11,6 +14,7 @@
           <div class="info">
             <p>性别： {{ doc.gender === "male" ? "男" : "女" }}</p>
             <p>联系方式： {{ doc.contact }}</p>
+            <p>介绍人 {{ doc.recommender }}</p>
             <p>注册时间: {{ convertedTimestamp(doc.createdAt) }}</p>
           </div>
           <div class="accept">
@@ -33,15 +37,11 @@ import getCollection from "@/composables/getCollection";
 import useDocument from "@/composables/useDoc";
 import getUser from "@/composables/getUser";
 import { timestamp } from "@/firebase/config";
-import { useRouter } from "vue-router";
-import { computed } from "vue";
 export default {
   name: "Home",
   setup() {
     //if not login, redirect to login page
     const { user } = getUser();
-    const router = useRouter();
-    if (!user.value) router.push("/login");
 
     const convertedTimestamp = (firebaseTimestamp) => {
       return firebaseTimestamp.toDate().toLocaleDateString();
