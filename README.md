@@ -1,5 +1,8 @@
 # SJSM
 
+## node env
+18.16
+
 ## Project setup
 ```
 yarn install
