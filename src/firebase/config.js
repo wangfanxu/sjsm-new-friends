@@ -1,16 +1,18 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+
 import { getFirestore, serverTimestamp } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
+
+import { initializeApp } from "firebase/app";
 const firebaseConfig = {
-  apiKey: "AIzaSyCYmaJI63n05oUjvFLRYhg4oYDipf-V08k",
-  authDomain: "SJSM.firebaseapp.com",
-  projectId: "sjsm-2c140",
-  storageBucket: "sjsm-2c140.appspot.com",
-  messagingSenderId: "5758066392",
-  appId: "1:5758066392:web:7209c2ac9bc2e32bfc81ad",
-  measurementId: "YOUR_MEASUREMENT_ID"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: ""
 };
 
 // Initialize Firebase app
@@ -24,5 +26,13 @@ const projectAuth = getAuth(app);
 
 // timestamp
 const timestamp = serverTimestamp();
+
+// config.js
+module.exports = {
+    googleClientId: process.env.GOOGLE_CLIENT_ID,
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET
+};
+
+
 
 export { projectFirestore, projectAuth, timestamp };
