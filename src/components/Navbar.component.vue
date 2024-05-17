@@ -14,10 +14,11 @@
           >
         </div>
         <div v-else>
-          <router-link class="btn" :to="{ name: 'Signup' }"
-            >创建</router-link
-          >
+          <router-link class="btn" :to="{ name: 'Signup' }">创建</router-link>
           <router-link class="btn" :to="{ name: 'Login' }">登录</router-link>
+          <button v-on:click.prevent="handleGoogleSignUp" v-if="!isPending">
+            Sign up with Google
+          </button>
         </div>
       </div>
     </nav>
@@ -27,6 +28,8 @@
 import useLogout from "@/composables/useLogout";
 import getUser from "@/composables/getUser";
 import { useRouter } from "vue-router";
+import { getAuth, signInWithPopup } from "firebase/auth";
+
 export default {
   setup() {
     const { logout } = useLogout();
@@ -38,7 +41,21 @@ export default {
       router.push({ name: "Login" });
     };
 
-    return { handleClick, user };
+    const handleGoogleSignUp = async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        const auth = getAuth;
+        const result = await signInWithPopup(auth, provider);
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
+        // const user = result.user;
+        console.log("Google sign up success:", user);
+      } catch (error) {
+        console.error("Google sign up error:", error.message);
+      }
+    };
+
+    return { handleClick, user, handleGoogleSignUp };
   },
 };
 </script>

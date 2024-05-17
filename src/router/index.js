@@ -1,13 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import HomeView from "../views/Home.view.vue";
 import Login from "../views/auth/Login.vue";
 import Signup from "@/views/auth/Signup.vue";
-import CreateNewFriend from "@/views/newFriends/CreateNewFriend.vue";
-import ManageNewFriend from "@/views/newFriends/CreateNewFriend.vue";
-import getUser from "@/composables/getUser";
+import CreateNewFriend from "@/views/newFriends/CreateNewFriend.view.vue";
+import ManageNewFriend from "@/views/newFriends/CreateNewFriend.view.vue";
 
 //route guard
-import { projectAuth } from "@/firebase/config";
+import { projectAuth } from "@/firebase/config.firebase";
 
 const requiredAuth = (to, from, next) => {
   let user = projectAuth.currentUser;
@@ -35,6 +34,11 @@ const routes = [
     component: Signup,
   },
   {
+    path: "/signup-seeker",
+    name: "Signup",
+    component: Signup,
+  },
+  {
     path: "/new-friend/create",
     name: "CreateNewFriend",
     component: CreateNewFriend,
@@ -51,7 +55,5 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
-
-const { user } = getUser();
 
 export default router;
