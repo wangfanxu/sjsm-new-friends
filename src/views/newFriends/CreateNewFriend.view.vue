@@ -16,7 +16,7 @@
 <script>
 import { ref } from "vue";
 import useCollection from "@/composables/useCollection";
-import { timestamp } from "@/firebase/config";
+import { timestamp } from "@/firebase/config.firebase";
 import { useRouter } from "vue-router";
 export default {
   setup() {

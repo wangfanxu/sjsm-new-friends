@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { projectFirestore } from "@/firebase/config";
+import { projectFirestore } from "@/firebase/config.firebase";
 
 const useCollection = (collection) => {
   const error = ref(null);

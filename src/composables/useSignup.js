@@ -1,5 +1,6 @@
 import { ref } from "vue";
-import { projectAuth } from "@/firebase/config";
+import { projectAuth } from "@/firebase/config.firebase";
+import useCollection from "./useCollection";
 
 const error = ref(null);
 const isPending = ref(false);
@@ -14,7 +15,26 @@ const signup = async (email, password, displayName) => {
     if (!res) {
       throw new Error("Could not complete signup");
     }
-    await res.user.updateProfile({ displayName });
+
+    const promises = [
+      res.user.updateProfile({ displayName }),
+      useCollection("users").addDoc({
+        name: displayName,
+        email,
+        userType: "seeker",
+        createdAt: Date.now(),
+        //contactNumber
+        //gender
+      }),
+      useCollection("seekers").addDoc({
+        name: displayName,
+        email,
+        createdAt: Date.now(),
+      }),
+    ];
+
+    await Promise.all(promises);
+
     error.value = null;
     return res;
   } catch (err) {
