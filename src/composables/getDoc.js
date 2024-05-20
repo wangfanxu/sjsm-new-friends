@@ -1,4 +1,3 @@
-import { ref, watchEffect } from "vue";
 import { projectFirestore } from "@/firebase/config.firebase";
 
 const getDoc = async (docPath) => {
