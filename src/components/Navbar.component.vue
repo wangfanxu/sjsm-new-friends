@@ -16,7 +16,10 @@
           <router-link class="btn" :to="{ name: 'createSeeker' }"
             >添加慕道友</router-link
           >
-          <router-link class="btn" :to="{ name: 'ManageSeekers' }"
+          <router-link
+            v-if="isAdmin"
+            class="btn"
+            :to="{ name: 'ManageSeekers' }"
             >管理员</router-link
           >
         </div>
@@ -32,19 +35,31 @@
 import useLogout from "@/composables/useLogout";
 import getUser from "@/composables/getUser";
 import { useRouter } from "vue-router";
+import { getUserById } from "./../firebase/query.firebase";
+import { ref, onMounted } from "vue";
 
 export default {
   setup() {
     const { logout } = useLogout();
     const { user } = getUser();
     const router = useRouter();
+    const isAdmin = ref(false);
 
     const handleClick = async () => {
       await logout();
       router.push({ name: "Login" });
     };
 
-    return { handleClick, user };
+    const checkIfUserIsAdmin = async () => {
+      const userDoc = await getUserById(user.value.uid);
+      console.log("userType", userDoc.userTYpe);
+      userDoc.userType === "admins"
+        ? (isAdmin.value = true)
+        : (isAdmin.value = false);
+    };
+    onMounted(checkIfUserIsAdmin);
+
+    return { handleClick, user, checkIfUserIsAdmin, isAdmin };
   },
 };
 </script>

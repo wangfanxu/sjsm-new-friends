@@ -9,8 +9,10 @@ const useCollection = (collection) => {
     error.value = null;
     isPending.value = true;
 
+    const query = projectFirestore.collection(collection).add(doc);
+
     try {
-      await projectFirestore.collection(collection).add(doc);
+      await query;
     } catch (err) {
       console.log(err.message);
       error.value = "could not add the document";

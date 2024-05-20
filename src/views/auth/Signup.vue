@@ -9,8 +9,7 @@
     <input required placeholder="联系方式" v-model="contactNumber" />
     <input type="email" placeholder="邮箱" v-model="email" required />
     <input type="password" placeholder="密码" v-model="password" required />
-    <input placeholder="推荐码" v-model="referralCode" required />
-    {{ referralCode }} test
+    <input placeholder="推荐码" v-model="inputReferralCode" required />
 
     <div v-if="error" class="error">{{ error }}</div>
     <button v-if="!isPending">Sign up</button>
@@ -33,26 +32,30 @@ export default {
     const displayName = ref("");
     const gender = ref("male");
     const contactNumber = ref();
-    const referralCode = ref("");
+    const inputReferralCode = ref("");
 
     const getReferralCode = async () => {
       //validate referral code
-      return (await getDoc("/adminSettings/settings")).referralCode;
+      return await getDoc("/adminSettings/settings");
     };
     const handleSubmit = async () => {
-      let roleType = "seekers";
-      if (referralCode) {
-        console.log("referralCode", referralCode);
-        const { adminReferralCode, referralCode } = await getReferralCode();
-        console.log("code", code);
-        console.log("input", referralCode);
-        if (code !== adminReferralCode && code !== referralCode) {
-          alert("invalid code");
-          return;
-        }
-        roleType = code === adminReferralCode ? "admin" : "receptionists";
-      }
+      let roleType = "receptionists";
 
+      const { adminReferralCode, referralCode } = await getReferralCode();
+      console.log(adminReferralCode, referralCode);
+      if (
+        inputReferralCode.value !== adminReferralCode &&
+        inputReferralCode.value !== referralCode
+      ) {
+        alert("invalid code");
+        return;
+      }
+      roleType =
+        inputReferralCode.value === adminReferralCode
+          ? "admins"
+          : "receptionists";
+
+      console.log("roleTYpe", roleType);
       await signup(
         email.value,
         password.value,
@@ -60,6 +63,7 @@ export default {
           displayName: displayName.value,
           gender: gender.value,
           contactNumber: contactNumber.value,
+          userType: roleType,
         },
         roleType
       );
@@ -76,7 +80,7 @@ export default {
       isPending,
       error,
       handleSubmit,
-      referralCode,
+      inputReferralCode,
       gender,
       contactNumber,
     };
