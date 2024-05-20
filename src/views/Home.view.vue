@@ -2,10 +2,8 @@
   <div class="home">
     <div v-if="error" class="error">Could not fetch the data from system</div>
 
-    
     <div v-if="documents">
-      我的慕道友
-      待接受慕道友
+      我的慕道友 待接受慕道友
       <div v-for="doc in documents" :key="doc.id">
         <div class="single">
           <div class="thumbnail">
@@ -46,7 +44,7 @@ export default {
     const convertedTimestamp = (firebaseTimestamp) => {
       return firebaseTimestamp.toDate().toLocaleDateString();
     };
-    const { error, documents } = getCollection("newfriends");
+    const { error, documents } = getCollection("seekers");
 
     const isCancelAllowed = ({ userName }) => {
       return user.value?.displayName === userName;
@@ -54,18 +52,16 @@ export default {
     const handleAccept = async (documentId) => {
       const { updateDoc } = useDocument(`/newfriends/${documentId}`);
       await updateDoc({
-        userId: user.value.uid,
+        receptionistId: user.value.uid,
         updatedAt: timestamp(),
-        userName: user.value?.displayName,
       });
     };
 
     const handleCancel = async (documentId) => {
       const { updateDoc } = useDocument(`/newfriends/${documentId}`);
       await updateDoc({
-        userId: null,
+        receptionistId: null,
         updatedAt: timestamp(),
-        userName: null,
       });
     };
 

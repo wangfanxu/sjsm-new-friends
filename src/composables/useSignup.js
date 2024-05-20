@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { projectAuth } from "@/firebase/config.firebase";
 import useCollection from "./useCollection";
+import { timestamp } from "@/firebase/config.firebase";
 
 const error = ref(null);
 const isPending = ref(false);
@@ -21,12 +22,12 @@ const signup = async (email, password, data, roleType) => {
       useCollection("users").addDoc({
         email,
         ...data,
-        createdAt: Date.now(),
+        createdAt: timestamp(),
       }),
       useCollection(`${roleType}`).addDoc({
         ...data,
         email,
-        createdAt: Date.now(),
+        createdAt: timestamp(),
       }),
     ];
 
