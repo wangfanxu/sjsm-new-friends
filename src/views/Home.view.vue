@@ -7,15 +7,14 @@
       <div v-for="doc in documents" :key="doc.id">
         <div class="single">
           <div class="thumbnail">
-            <h3>{{ doc.name }}</h3>
+            <h3>{{ doc.displayName }}</h3>
           </div>
           <div class="info">
             <p>性别： {{ doc.gender === "male" ? "男" : "女" }}</p>
-            <p>联系方式： {{ doc.contact }}</p>
+            <p>联系方式： {{ doc.contactNumber }}</p>
             <p>注册时间: {{ convertedTimestamp(doc.createdAt) }}</p>
           </div>
           <div class="accept">
-            <p v-if="doc.userName">接收人：{{ doc.userName }}</p>
             <button style="margin-left: 10px" @click="handleAccept(doc.id)">
               接收
             </button>
@@ -44,7 +43,7 @@ export default {
     const convertedTimestamp = (firebaseTimestamp) => {
       return firebaseTimestamp.toDate().toLocaleDateString();
     };
-    const { error, documents } = getCollection("seekers");
+    const { error, documents } = getCollection("seekers", "receptionistId", null);
 
     const isCancelAllowed = ({ userName }) => {
       return user.value?.displayName === userName;

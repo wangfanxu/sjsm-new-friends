@@ -5,9 +5,7 @@
         ><img src="@/assets/SJSM_logo.png"
       /></router-link>
       <router-link
-        style="margin-left: 20px"
-        class="btn"
-        :to="{ name: 'Signup' }"
+        :to="{ name: 'ManageMySeekers', params: { userId: user.uid } }"
         >我的慕道友</router-link
       >
 
