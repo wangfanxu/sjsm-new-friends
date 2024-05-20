@@ -8,7 +8,7 @@ import ManageNewFriend from "@/views/newFriends/CreateNewFriend.view.vue";
 //route guard
 import { projectAuth } from "@/firebase/config.firebase";
 
-const requiredAuth = (to, from, next) => {
+const requiredAuth = (_to, _from, next) => {
   let user = projectAuth.currentUser;
   if (!user) {
     next({ name: "Login" });
