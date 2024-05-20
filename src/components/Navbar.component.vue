@@ -6,6 +6,7 @@
       /></router-link>
       <router-link
         v-if="user"
+        class="btn"
         :to="{ name: 'ManageMySeekers', params: { userId: user.uid } }"
         >我的慕道友</router-link
       >

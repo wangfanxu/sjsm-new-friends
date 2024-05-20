@@ -2,7 +2,6 @@
   <div class="home">
     <div v-if="error" class="error">Could not fetch the data from system</div>
 
-    {{ documents }}
     <div v-if="documents">
       <h1>待接受慕道友</h1>
       <div v-for="doc in documents" :key="doc.id">
