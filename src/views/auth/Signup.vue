@@ -43,14 +43,14 @@ export default {
       let roleType = "seekers";
       if (referralCode) {
         console.log("referralCode", referralCode);
-        const code = await getReferralCode();
+        const { adminReferralCode, referralCode } = await getReferralCode();
         console.log("code", code);
         console.log("input", referralCode);
-        if (code !== referralCode.value) {
+        if (code !== adminReferralCode && code !== referralCode) {
           alert("invalid code");
           return;
         }
-        roleType = "receptionists";
+        roleType = code === adminReferralCode ? "admin" : "receptionists";
       }
 
       await signup(
