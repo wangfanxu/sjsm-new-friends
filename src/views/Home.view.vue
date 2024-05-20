@@ -2,6 +2,7 @@
   <div class="home">
     <div v-if="error" class="error">Could not fetch the data from system</div>
 
+    {{ documents }}
     <div v-if="documents">
       <h1>待接受慕道友</h1>
       <div v-for="doc in documents" :key="doc.id">
@@ -43,7 +44,11 @@ export default {
     const convertedTimestamp = (firebaseTimestamp) => {
       return firebaseTimestamp.toDate().toLocaleDateString();
     };
-    const { error, documents } = getCollection("seekers", "receptionistId", null);
+    const { error, documents } = getCollection(
+      "seekers",
+      "receptionistId",
+      null
+    );
 
     const isCancelAllowed = ({ userName }) => {
       return user.value?.displayName === userName;
@@ -53,6 +58,7 @@ export default {
       await updateDoc({
         receptionistId: user.value.uid,
         updatedAt: timestamp(),
+        receptionistName: user.value.displayName,
       });
     };
 

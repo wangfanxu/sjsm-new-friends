@@ -27,7 +27,6 @@
 <script>
 import getCollection from "@/composables/getCollection";
 import useDocument from "@/composables/useDoc";
-import getUser from "@/composables/getUser";
 import { timestamp } from "@/firebase/config.firebase";
 import { useRoute } from "vue-router";
 

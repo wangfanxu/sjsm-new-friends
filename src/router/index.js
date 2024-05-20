@@ -3,7 +3,7 @@ import HomeView from "../views/Home.view.vue";
 import Login from "../views/auth/Login.vue";
 import Signup from "@/views/auth/Signup.vue";
 import createSeeker from "@/views/newFriends/CreateNewFriend.view.vue";
-import ManageSeekers from "@/views/newFriends/CreateNewFriend.view.vue";
+import ManageSeekers from "@/views/newFriends/ManageNewSeeker.view.vue";
 import ManageMySeekers from "@/views/newFriends/ManageMySeeker.view.vue";
 
 //route guard

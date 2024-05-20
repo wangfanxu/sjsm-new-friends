@@ -5,6 +5,7 @@
         ><img src="@/assets/SJSM_logo.png"
       /></router-link>
       <router-link
+        v-if="user"
         :to="{ name: 'ManageMySeekers', params: { userId: user.uid } }"
         >我的慕道友</router-link
       >
