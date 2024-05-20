@@ -10,7 +10,6 @@ const getDoc = async (docPath) => {
       ...documentData.data(),
     };
   } catch (e) {
-    console.log("error", e);
     throw Error("error to get document", e);
   }
 };

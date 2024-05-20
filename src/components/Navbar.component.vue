@@ -53,7 +53,6 @@ export default {
 
     const checkIfUserIsAdmin = async () => {
       const userDoc = await getUserById(user.value.uid);
-      console.log("userType", userDoc.userTYpe);
       userDoc.userType === "admins"
         ? (isAdmin.value = true)
         : (isAdmin.value = false);

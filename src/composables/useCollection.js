@@ -14,7 +14,6 @@ const useCollection = (collection) => {
     try {
       await query;
     } catch (err) {
-      console.log(err.message);
       error.value = "could not add the document";
     } finally {
       isPending.value = false;
