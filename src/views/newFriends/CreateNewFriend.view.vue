@@ -36,6 +36,7 @@ export default {
         contactNumber: contact.value,
         extraInformation: extraInformation.value,
         createdAt: timestamp(),
+        receptionistId: null,
       });
       if (!error.value) {
         alert("creation success!");

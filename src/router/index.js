@@ -2,8 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/Home.view.vue";
 import Login from "../views/auth/Login.vue";
 import Signup from "@/views/auth/Signup.vue";
-import CreateNewFriend from "@/views/newFriends/CreateNewFriend.view.vue";
-import ManageNewFriend from "@/views/newFriends/CreateNewFriend.view.vue";
+import createSeeker from "@/views/newFriends/CreateNewFriend.view.vue";
+import ManageSeekers from "@/views/newFriends/CreateNewFriend.view.vue";
+import ManageMySeekers from "@/views/newFriends/ManageMySeeker.view.vue";
 
 //route guard
 import { projectAuth } from "@/firebase/config.firebase";
@@ -40,13 +41,19 @@ const routes = [
   },
   {
     path: "/new-friend/create",
-    name: "CreateNewFriend",
-    component: CreateNewFriend,
+    name: "createSeeker",
+    component: createSeeker,
   },
   {
     path: "/new-friend/manage",
-    name: "ManageNewFriend",
-    component: ManageNewFriend,
+    name: "ManageSeekers",
+    component: ManageSeekers,
+    beforeEnter: requiredAuth,
+  },
+  {
+    path: "/new-friend/:userId/manage",
+    name: "ManageMySeekers",
+    component: ManageMySeekers,
     beforeEnter: requiredAuth,
   },
 ];

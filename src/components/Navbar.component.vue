@@ -1,15 +1,23 @@
 <template>
   <div class="navbar">
     <nav>
-      <img src="@/assets/SJSM_logo.png" />
-      <h1><router-link :to="{ name: 'home' }">SJSM</router-link></h1>
+      <router-link :to="{ name: 'home' }"
+        ><img src="@/assets/SJSM_logo.png"
+      /></router-link>
+      <router-link
+        style="margin-left: 20px"
+        class="btn"
+        :to="{ name: 'Signup' }"
+        >我的慕道友</router-link
+      >
+
       <div class="links">
         <div v-if="user">
           <button @click="handleClick()">登出</button>
-          <router-link class="btn" :to="{ name: 'CreateNewFriend' }"
+          <router-link class="btn" :to="{ name: 'createSeeker' }"
             >添加慕道友</router-link
           >
-          <router-link class="btn" :to="{ name: 'ManageNewFriend' }"
+          <router-link class="btn" :to="{ name: 'ManageSeekers' }"
             >管理员</router-link
           >
         </div>
