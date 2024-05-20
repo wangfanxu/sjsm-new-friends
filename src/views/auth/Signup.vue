@@ -1,24 +1,16 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <h3>Sign up</h3>
-    <input type="text" placeholder="姓名" v-model="displayName" />
-    <select v-model="gender" placeholder="性别">
+    <input type="text" placeholder="姓名" v-model="displayName" required />
+    <select v-model="gender" placeholder="性别" required>
       <option value="male">男</option>
       <option value="female">女</option>
     </select>
-    <input
-      type="number"
-      required
-      placeholder="联系方式"
-      v-model="contactNumber"
-    />
-    <input type="email" placeholder="邮箱" v-model="email" />
-    <input type="password" placeholder="密码" v-model="password" />
-    <input
-      type="password"
-      placeholder="推荐码（仅供SJSM内部人士填写）"
-      v-model="referralCode"
-    />
+    <input required placeholder="联系方式" v-model="contactNumber" />
+    <input type="email" placeholder="邮箱" v-model="email" required />
+    <input type="password" placeholder="密码" v-model="password" required />
+    <input placeholder="推荐码" v-model="referralCode" required />
+    {{ referralCode }} test
 
     <div v-if="error" class="error">{{ error }}</div>
     <button v-if="!isPending">Sign up</button>
@@ -32,6 +24,8 @@ import { useRouter } from "vue-router";
 import getDoc from "@/composables/getDoc";
 export default {
   setup() {
+    const router = useRouter();
+
     const { error, signup, isPending } = useSignup();
 
     const email = ref("");
@@ -41,26 +35,51 @@ export default {
     const contactNumber = ref();
     const referralCode = ref("");
 
-    const validateReferralCode = async () => {
+    const getReferralCode = async () => {
       //validate referral code
-      const documentData = await getDoc("/adminSettings/settings");
-      console.log("documentData", documentData);
+      return (await getDoc("/adminSettings/settings")).referralCode;
     };
     const handleSubmit = async () => {
-      let isValidReferralCode = false;
-      if (referralCode) await validateReferralCode();
+      let roleType = "seekers";
+      if (referralCode) {
+        console.log("referralCode", referralCode);
+        const code = await getReferralCode();
+        console.log("code", code);
+        console.log("input", referralCode);
+        if (code !== referralCode.value) {
+          alert("invalid code");
+          return;
+        }
+        roleType = "receptionists";
+      }
 
-      await signup(email.value, password.value, displayName.value);
+      await signup(
+        email.value,
+        password.value,
+        {
+          displayName: displayName.value,
+          gender: gender.value,
+          contactNumber: contactNumber.value,
+        },
+        roleType
+      );
 
       //success sign up
       if (!error.value) {
-        console.log("user sign up success");
-        const router = useRouter();
         router.push({ name: "home" });
       }
-      //redirect to home page
     };
-    return { email, password, displayName, isPending, error, handleSubmit };
+    return {
+      email,
+      password,
+      displayName,
+      isPending,
+      error,
+      handleSubmit,
+      referralCode,
+      gender,
+      contactNumber,
+    };
   },
 };
 </script>

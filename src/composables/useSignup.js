@@ -4,7 +4,7 @@ import useCollection from "./useCollection";
 
 const error = ref(null);
 const isPending = ref(false);
-const signup = async (email, password, displayName) => {
+const signup = async (email, password, data, roleType) => {
   error.value = null;
   isPending.value = true;
   try {
@@ -17,17 +17,14 @@ const signup = async (email, password, displayName) => {
     }
 
     const promises = [
-      res.user.updateProfile({ displayName }),
+      res.user.updateProfile({ displayName: data.displayName }),
       useCollection("users").addDoc({
-        name: displayName,
         email,
-        userType: "seeker",
+        ...data,
         createdAt: Date.now(),
-        //contactNumber
-        //gender
       }),
-      useCollection("seekers").addDoc({
-        name: displayName,
+      useCollection(`${roleType}`).addDoc({
+        ...data,
         email,
         createdAt: Date.now(),
       }),

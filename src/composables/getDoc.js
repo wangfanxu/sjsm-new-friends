@@ -6,14 +6,14 @@ const getDoc = async (docPath) => {
   try {
     const documentData = await projectFirestore.doc(docPath).get();
     return {
-      error,
-      data: {
-        id: documentData.id,
-        ref: documentData.ref,
-        ...documentData.data(),
-      },
+      id: documentData.id,
+      ref: documentData.ref,
+      ...documentData.data(),
     };
   } catch (e) {
+    console.log("error", e);
     throw Error("error to get document", e);
   }
 };
+
+export default getDoc;
