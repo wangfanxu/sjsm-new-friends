@@ -3,25 +3,19 @@
     <div v-if="error" class="error">Could not fetch the data from system</div>
 
     <div v-if="documents">
-      <h1>待接受慕道友</h1>
+      <h1>我的慕道友</h1>
       <div v-for="doc in documents" :key="doc.id">
         <div class="single">
           <div class="thumbnail">
-            <h3>{{ doc.name }}</h3>
+            <h3>{{ doc.displayName }}</h3>
           </div>
           <div class="info">
             <p>性别： {{ doc.gender === "male" ? "男" : "女" }}</p>
-            <p>联系方式： {{ doc.contact }}</p>
+            <p>联系方式： {{ doc.contactNumber }}</p>
             <p>注册时间: {{ convertedTimestamp(doc.createdAt) }}</p>
           </div>
           <div class="accept">
-            <p v-if="doc.userName">接收人：{{ doc.userName }}</p>
-            <button style="margin-left: 10px" @click="handleAccept(doc.id)">
-              接收
-            </button>
-            <button v-if="isCancelAllowed(doc)" @click="handleCancel(doc.id)">
-              撤销接受
-            </button>
+            <button @click="handleCancel(doc.id)">撤销接受</button>
           </div>
         </div>
       </div>
@@ -35,27 +29,22 @@ import getCollection from "@/composables/getCollection";
 import useDocument from "@/composables/useDoc";
 import getUser from "@/composables/getUser";
 import { timestamp } from "@/firebase/config.firebase";
+import { useRoute } from "vue-router";
+
 export default {
   name: "Home",
   setup() {
-    //if not login, redirect to login page
-    const { user } = getUser();
+    const route = useRoute();
+    const userId = route.params.userId;
 
     const convertedTimestamp = (firebaseTimestamp) => {
       return firebaseTimestamp.toDate().toLocaleDateString();
     };
-    const { error, documents } = getCollection("seekers");
-
-    const isCancelAllowed = ({ userName }) => {
-      return user.value?.displayName === userName;
-    };
-    const handleAccept = async (documentId) => {
-      const { updateDoc } = useDocument(`/seekers/${documentId}`);
-      await updateDoc({
-        receptionistId: user.value.uid,
-        updatedAt: timestamp(),
-      });
-    };
+    const { error, documents } = getCollection(
+      "seekers",
+      "receptionistId",
+      userId
+    );
 
     const handleCancel = async (documentId) => {
       const { updateDoc } = useDocument(`/seekers/${documentId}`);
@@ -68,8 +57,6 @@ export default {
     return {
       error,
       documents,
-      handleAccept,
-      isCancelAllowed,
       handleCancel,
       convertedTimestamp,
     };
