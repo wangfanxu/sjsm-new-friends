@@ -14,10 +14,10 @@
       <div class="links">
         <div v-if="user">
           <button @click="handleClick()">登出</button>
-          <router-link class="btn" :to="{ name: 'CreateNewFriend' }"
+          <router-link class="btn" :to="{ name: 'createSeeker' }"
             >添加慕道友</router-link
           >
-          <router-link class="btn" :to="{ name: 'ManageNewFriend' }"
+          <router-link class="btn" :to="{ name: 'ManageSeekers' }"
             >管理员</router-link
           >
         </div>
