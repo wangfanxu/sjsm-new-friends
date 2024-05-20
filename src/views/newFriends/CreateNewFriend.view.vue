@@ -24,7 +24,7 @@ export default {
     const router = useRouter();
 
     const name = ref("");
-    const gender = ref("");
+    const gender = ref("male");
     const contact = ref("");
     const recommender = ref("");
     const extraInformation = ref("");

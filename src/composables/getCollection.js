@@ -21,13 +21,10 @@ const getCollection = (collection, filter = "", value = "") => {
       snap.docs.forEach((doc) => {
         doc.data().createdAt && results.push({ ...doc.data(), id: doc.id });
       });
-      console.log("pushing");
       documents.value = results;
       error.value = null;
-      console.log(documents.value);
     },
     (err) => {
-      console.log(err.message);
       document.value = null;
       error.value = "could not fetch the data";
     }
