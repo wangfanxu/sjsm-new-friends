@@ -39,7 +39,7 @@ const signup = async (email, password, data, roleType) => {
     console.log(err.message);
     error.value = err.message;
   } finally {
-    isPending.value = false;
+   isPending.value = false;
   }
 };
 

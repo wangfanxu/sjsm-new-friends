@@ -8,6 +8,7 @@ const getCollection = (collection) => {
   //register the firestore collection reference
   let collectionRef = projectFirestore
     .collection(collection)
+    .where("receptionistId", "==", "")
     .orderBy("createdAt");
 
   const unsub = collectionRef.onSnapshot(

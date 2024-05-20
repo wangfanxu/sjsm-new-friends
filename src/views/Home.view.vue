@@ -3,7 +3,7 @@
     <div v-if="error" class="error">Could not fetch the data from system</div>
 
     <div v-if="documents">
-      我的慕道友 待接受慕道友
+      <h1>待接受慕道友</h1>
       <div v-for="doc in documents" :key="doc.id">
         <div class="single">
           <div class="thumbnail">
@@ -12,7 +12,6 @@
           <div class="info">
             <p>性别： {{ doc.gender === "male" ? "男" : "女" }}</p>
             <p>联系方式： {{ doc.contact }}</p>
-            <p>介绍人 {{ doc.recommender }}</p>
             <p>注册时间: {{ convertedTimestamp(doc.createdAt) }}</p>
           </div>
           <div class="accept">
@@ -27,6 +26,7 @@
         </div>
       </div>
     </div>
+    <div v-else>所有慕道友均已被接受</div>
   </div>
 </template>
 
@@ -50,7 +50,7 @@ export default {
       return user.value?.displayName === userName;
     };
     const handleAccept = async (documentId) => {
-      const { updateDoc } = useDocument(`/newfriends/${documentId}`);
+      const { updateDoc } = useDocument(`/seekers/${documentId}`);
       await updateDoc({
         receptionistId: user.value.uid,
         updatedAt: timestamp(),
@@ -58,7 +58,7 @@ export default {
     };
 
     const handleCancel = async (documentId) => {
-      const { updateDoc } = useDocument(`/newfriends/${documentId}`);
+      const { updateDoc } = useDocument(`/seekers/${documentId}`);
       await updateDoc({
         receptionistId: null,
         updatedAt: timestamp(),
