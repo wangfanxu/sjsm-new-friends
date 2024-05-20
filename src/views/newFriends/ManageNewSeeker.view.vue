@@ -7,13 +7,10 @@
       tableStyle="min-width: 50rem"
     >
       <Column field="id" sortable hidden></Column>
-      <Column field="name" header="姓名" sortable></Column>
-      <Column field="contact" header="性别" sortable></Column>
-      <Column field="contact" header="联系方式" sortable></Column>
-      <Column field="userName" header="招待员" sortable></Column>
-      <Column field="recommender" header="介绍人" sortable></Column>
+      <Column field="displayName" header="姓名" sortable></Column>
+      <Column field="contactNumber" header="联系方式" sortable></Column>
+      <Column field="receptionistName" header="招待员" sortable></Column>
 
-      <Column field="DecisivePrayer" header="是否决志" sortable></Column>
       <Column>
         <template #body="slotProps">
           <button @click="handleEdit(slotProps)">修改</button>
@@ -28,19 +25,17 @@
     :style="{ width: '50vw' }"
   >
     <label>姓名</label>
-    <input type="text" v-model="selectedRow.name" />
+    <input type="text" v-model="selectedRow.displayName" />
 
     <label>性别</label>
     <input type="text" v-model="selectedRow.gender" />
 
     <label>联系方式</label>
-    <input type="text" v-model="selectedRow.contact" />
+    <input type="text" v-model="selectedRow.contactNumber" />
 
     <label>招待员</label>
-    <input type="text" v-model="selectedRow.userName" />
+    <input type="text" v-model="selectedRow.receptionistName" />
 
-    <label>是否决志</label>
-    <input type="text" v-model="selectedRow.DecisivePrayer" />
     <Button @click="handleUpdate(selectedRow)">提交</Button>
   </Dialog>
 </template>
@@ -49,7 +44,7 @@
 import getCollection from "@/composables/getCollection";
 import useDocument from "@/composables/useDoc";
 import { ref } from "vue";
-const { documents } = getCollection("newfriends");
+const { documents } = getCollection("seekers");
 const displaySetting = ref(false);
 const selectedRow = ref(null);
 
@@ -59,8 +54,7 @@ const handleEdit = ({ data }) => {
 };
 
 const handleUpdate = async (selectedRow) => {
-  console.log("running");
-  const { updateDoc } = useDocument(`/newfriends/${selectedRow.id}`);
+  const { updateDoc } = useDocument(`/seekers/${selectedRow.id}`);
   try {
     await updateDoc({ ...selectedRow });
   } catch (e) {
